@@ -23,7 +23,7 @@ services:
             - sail
         depends_on:
             - mysql
-            - redis
+            - rabbitmq
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -43,23 +43,22 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
-    redis:
-        image: 'redis:alpine'
+    rabbitmq:
+        image: rabbitmq:3-management-alpine
+        container_name: 'rabbitmq'
         ports:
-            - '${FORWARD_REDIS_PORT:-6379}:6379'
+            - 5672:5672
+            - 15672:15672
         volumes:
-            - 'sail-redis:/data'
+            - 'sail-rabbitmq:/var/lib/rabbitmq/'
+            - 'sail-rabbitmq:/var/log/rabbitmq'
         networks:
             - sail
-        healthcheck:
-            test: ["CMD", "redis-cli", "ping"]
-            retries: 3
-            timeout: 5s
 networks:
     sail:
         driver: bridge
 volumes:
     sail-mysql:
         driver: local
-    sail-redis:
+    sail-rabbitmq:
         driver: local
