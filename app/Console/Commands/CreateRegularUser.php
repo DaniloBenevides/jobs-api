@@ -45,7 +45,8 @@ class CreateRegularUser extends Command
 
         DB::commit();
 
-        echo "Your token is: ". $token->plainTextToken;
+        $token = explode("|", trim($token->plainTextToken));
+        echo "Your token is: ". $token[1];
         return 0;
     }
 }
