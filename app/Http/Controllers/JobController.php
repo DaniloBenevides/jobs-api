@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Domain\Jobs\Actions\List\ListJobs;
 use App\Http\Requests\StoreJobRequest;
 use App\Models\Job;
 use App\Models\User;
@@ -16,10 +15,12 @@ class JobController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, ListJobs $listJobs)
+    public function index(Request $request)
     {
-        $user_id = $request->user()->id;
-        return $listJobs($user_id);
+        $user = $request->user();
+        $jobs = $user->jobs;
+
+        return $jobs;
     }
 
     /**

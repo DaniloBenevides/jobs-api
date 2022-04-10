@@ -58,7 +58,17 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the roles configured for the user.
+     *  Get the jobs created by the user
+     *
+     * @return HasMany
+     */
+    public function jobs(): HasMany
+    {
+        return $this->hasMany(Job::class);
+    }
+
+    /**
+     * Get the users with the role manager
      *
      * @return BelongsToMany
      */
@@ -67,7 +77,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class)->where('id', 2);
     }
 
-
+    /**
+     * Check if the user has the manager role
+     *
+     * @return bool
+     */
     public function isManager(): bool
     {
         return $this->roles->contains('role_id', 2) >= 1;
