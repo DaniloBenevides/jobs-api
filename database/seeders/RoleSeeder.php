@@ -14,11 +14,13 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        Role::create([
+        Role::firstOrcreate([
+            "id" => 1,
             "name" => "regular"
         ]);
 
-        Role::create([
+        Role::firstOrCreate([
+            "id" => 2,
             "name" => "manager"
         ]);
     }
