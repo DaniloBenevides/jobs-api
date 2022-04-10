@@ -13,6 +13,10 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $with = [
+        "roles"
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -51,5 +55,21 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Get the roles configured for the user.
+     *
+     * @return BelongsToMany
+     */
+    public function managers(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class)->where('id', 2);
+    }
+
+
+    public function isManager(): bool
+    {
+        return $this->roles->contains('role_id', 2) >= 1;
     }
 }
